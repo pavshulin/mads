@@ -1,7 +1,16 @@
 module.exports = function(grunt) {
 
   grunt.initConfig({
-
+    browserify: {
+      dist: {
+        files: {
+          'public/script.js': ['src/js/**/*.js']
+        },
+        options: {
+          transform: ['babelify']
+        }
+      }
+    }
   });
 
   grunt.loadNpmTasks('grunt-browserify');
@@ -11,5 +20,5 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('default', ['help']);
-
+  grunt.registerTask('build', ['browserify']);
 };
