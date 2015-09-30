@@ -1,0 +1,10 @@
+{
+  "name": "mads",
+  "description": "README.md",
+  "version": "0.0.1",
+  "repository": "mads",
+  "author": "pavshulin",
+  "devDependencies": {
+    "grunt-browserify": "~3.8.0",
+  },
+}
