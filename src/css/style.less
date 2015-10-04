@@ -2,3 +2,32 @@ body {
 	margin: 0;
 	padding: 0;
 }
+
+.slider-wrapper {
+	margin: 100px auto 0;
+	width: 500px;
+	overflow: hidden;
+	height: 300px;
+
+	.slider-container {
+		width: 500px;
+		height: 300px;
+		position: relative;
+
+		.slider-item {
+			position: absolute;
+			display: none;
+			left: 0;
+			top: 0;
+
+				img {
+					width: 500px;
+					height: 300px;
+				}
+			&.slider-active-item {
+				display: block;
+			}	
+		}
+
+	}
+}
