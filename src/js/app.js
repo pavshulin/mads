@@ -8,7 +8,7 @@ var config = {
 		'public/img/ida.jpg',
 		'public/img/garrus.jpg',
 		'public/img/mordin.jpg',
-		'public/img/djoker.jpg',
+		'public/img/joker.jpg',
 		'public/img/liara.jpg'
 	],
 	// possible values: 'auto', 'manual', 'automanual'

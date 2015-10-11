@@ -2,7 +2,6 @@ var $ = require('../common/mQuery');
 
 class Slider {
 	constructor (config) {
-
 		this._items = new Map();
 		this._length = 0;
 
