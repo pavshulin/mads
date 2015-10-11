@@ -11,6 +11,10 @@ class mQuery {
 			&& typeof obj.item === 'function';
 	}
 
+	_isNodeElement (el) {
+		return el && 'nodeType' in el && el.nodeType === 1;
+	}
+
 	find (parent, selector) {
 		var result = [],
 			element;
@@ -52,24 +56,64 @@ class mQuery {
 			this.each(el, (e) => {
 				this._cssForElement(e, properties);
 			})
+		} else if (this._isNodeElement(el)) {
+			this._cssForElement(el, properties);
 		}
 	}
 
-	append () {
-
+	append (parent, el) {
+		parent.appendChild(el);
 	}
 
-	prepend () {
-
+	prepend (parent, el) {
+		parent.insertBefore(el, parent.firstChild);
 	}
 
-	html () {
+	html (el, content) {
+		if (content && outerHTML in content 
+			&& typeof content.outerHTML === 'string') {
+			content = content.outerHTML;
+		}
 
+		el.innerHTML = content;
 	}
 
-	prop () {
-		
+	_propForElement (e, properties) {
+		var prop;
+
+		if (typeof properties !== 'object') {
+			return null;
+		}
+
+		for (prop in properties) {
+			if (properties.hasOwnProperty(prop)) {
+				e.setAttribute(prop, properties[prop]);
+			}
+		}
 	}
+
+	prop (elements, properties) {
+		if(this._isNodeListArray(elements)) {
+			this.each(elements, (e) => {
+				this._propForElement(e, properties);
+			})
+		} else if (this._isNodeElement(elements)) {
+			this._propForElement(elements, properties);
+		}
+	}
+
+	createElement (elementName) {
+		return document.createElement(elementName);
+	}
+	
+	get (set, index) {
+		if (!this._isNodeListArray(set) || set.length < index) {
+			return null;
+		}
+
+		return set[index];
+	}
+ 
 }
 
 module.exports = new mQuery();

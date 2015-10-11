@@ -1,4 +1,4 @@
-var $m = require('../common/mQuery');
+var $ = require('../common/mQuery');
 
 class Slider {
 	constructor (config) {
@@ -8,9 +8,8 @@ class Slider {
 	}
 
 	_initialize () {
-		this._$container = $m.find('#slider');
+		this._$container = $.find('#slider');
 
-		
 	}
 }
 
