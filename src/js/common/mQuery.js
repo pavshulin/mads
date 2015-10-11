@@ -15,7 +15,7 @@ class mQuery {
 		return el && 'nodeType' in el && el.nodeType === 1;
 	}
 
-	find (parent, selector) {
+	findAll (parent, selector) {
 		var result = [],
 			element;
 
@@ -25,6 +25,10 @@ class mQuery {
 		}		
 
 		return parent.querySelectorAll(selector);
+	}
+
+	find (parent, selector) {
+		return this.get(this.findAll(parent, selector), 0);
 	}
 
 	each (el, callback) {
@@ -113,7 +117,7 @@ class mQuery {
 
 		return set[index];
 	}
- 
+
 }
 
 module.exports = new mQuery();

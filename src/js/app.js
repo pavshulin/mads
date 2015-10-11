@@ -4,10 +4,12 @@ var Slider = require('./slider');
 var config = {
 	// arbitrary number of images
 	images: [
-		'http://example.com/image-1.jpg',
-		'http://example.com/image-2.jpg',
-		'http://example.com/image-3.jpg',
-		'http://example.com/image-4.jpg'
+		'public/img/shepard.jpg',
+		'public/img/ida.jpg',
+		'public/img/garrus.jpg',
+		'public/img/mordin.jpg',
+		'public/img/djoker.jpg',
+		'public/img/liara.jpg'
 	],
 	// possible values: 'auto', 'manual', 'automanual'
 	mode: 'auto',
