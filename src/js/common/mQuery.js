@@ -96,6 +96,14 @@ class mQuery {
 		}
 	}
 
+	getProp (el, property) {
+		if (!this._isNodeElement(el)) {
+			return null;
+		}
+
+		return el.getAttribute(property);
+	}
+
 	prop (elements, properties) {
 		if(this._isNodeListArray(elements)) {
 			this.each(elements, (e) => {
@@ -118,6 +126,25 @@ class mQuery {
 		return set[index];
 	}
 
+	addClass (el, className) {
+	   	if (this._isNodeElement(el)) {
+        	el.className = [el.className, className].join(" ");
+    	}
+	}
+
+	removeClass (el, className) {
+	   	if (this._isNodeElement(el)) {
+			el.className = el.className.replace(className, '');
+		}
+	}
+
+	on (el, event, callback) {
+		el.addEventListener(event, callback);
+	}
+
+	off (el, event, callback) {
+		el.removeEventListener(event, callback);
+	}
 }
 
 module.exports = new mQuery();
