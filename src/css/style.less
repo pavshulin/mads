@@ -1,6 +1,9 @@
+@import "mixins"; 
+
 body {
 	margin: 0;
 	padding: 0;
+	background: #C0C0C0;
 }
 
 .slider-wrapper {
@@ -8,6 +11,7 @@ body {
 	width: 500px;
 	overflow: hidden;
 	height: 300px;
+	border: 1px solid black;
 
 	.slider-container {
 		width: 500px;
@@ -19,15 +23,27 @@ body {
 			display: none;
 			left: 0;
 			top: 0;
+			opacity: 1;
+
+			.transition(left 2500ms ease-out 0s);
 
 				img {
 					width: 500px;
 					height: 300px;
 				}
+
+			&.slider-visible-item {
+				display: block;
+			}	
+
 			&.slider-active-item {
 				display: block;
 			}	
-		}
 
+			&.slider-animate-fade {
+				opacity: 0;
+			}
+
+		}
 	}
 }
