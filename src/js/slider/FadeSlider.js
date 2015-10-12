@@ -54,13 +54,6 @@ class FadeSlider extends Slider {
 
 	}
 
-	_getNextLeft () {
-		return this._visible !== 0 ? this._visible - 1 : this._length - 1;
-	}
-
-	_getNextRight () {
-		return this._visible === this._length - 1 ? 0 : this._visible + 1;
-	}
 }
 
 module.exports = FadeSlider;
