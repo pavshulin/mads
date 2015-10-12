@@ -1,18 +1,19 @@
 var $ = require('../common/mQuery');
 
-var staticProperties = {
-	'defaultConfig': {},
-	'ACTIVE_CLASS': 'slider-active-item',
-	'ITEM_CLASS': 'slider-item'
-}
+const CONTAINER_CLASS = 'slider-container',
+	  ACTIVE_CLASS = 'slider-active-item',
+	  WRAPPER_CLASS = 'slider-wrapper',
+	  ITEM_CLASS = 'slider-item',
+	  defaultConfig = {};
+
 class Slider {
-	constructor (config) {
-		this._initializeStaticProperties()
-			._initializeDefaults();
+	
+	constructor (el, config) {
+		this._initializeDefaults();
 		
 		this.config = config || this.defaultConfig;
 
-		this._initializeElements()
+		this._initializeElements(el)
 			._createItems()
 			.initializeListeners();
 
@@ -31,25 +32,13 @@ class Slider {
 		return this;
 	}
 
-	_initializeStaticProperties () {
-		var property;
+	_initializeElements (el) {
+		this._$slider = el;
+		this._$container = $.createElement('div');
 
-		for (property in staticProperties) {
-			// hate this crap
-			if (staticProperties.hasOwnProperty(property)) {
-				Object.defineProperty(this, property, {
-					value: staticProperties[property],
-					writable: false
-				});
-			}
-		}
-
-		return this;
-	}
-
-	_initializeElements () {
-		this._$slider = $.find('#slider');
-		this._$container = $.find('#slider-container');
+		$.append(this._$slider, this._$container)
+			.addClass(this._$slider, WRAPPER_CLASS)
+			.addClass(this._$container, CONTAINER_CLASS);
 
 		return this;
 	}
@@ -59,14 +48,12 @@ class Slider {
 			img = $.createElement('img');
 
 		$.prop(div, {
-			'class': this.ITEM_CLASS
-		});
-
-		$.prop(img, {
-			'src': src
-		});
-
-		$.append(div, img);
+				'class': ITEM_CLASS
+			})
+			.prop(img, {
+				'src': src
+			})
+			.append(div, img);
 
 		return div;
 	}
@@ -102,25 +89,23 @@ class Slider {
 		$.on(this._$container, 'mousedown', (event) => {
 			this._onSlideStart(this._getMouseEventX(event));
 			event.preventDefault();
-		});
-		$.on(this._$container, 'touchstart', (event) => {
-			this._onSlideStart(this._getTouchEventX(event));
-			event.preventDefault();
-		});
-
-		$.on(this._$container, 'mousemove', (event) => {
-			this._onSlideMove(this._getMouseEventX(event));
-		});
-		$.on(this._$container, 'touchmove', (event) => {
-			this._onSlideMove(this._getTouchEventX(event));
-		});
-
-		$.on(this._$container, 'mouseup', (event) => {
-			this._onSlideEnd(event);
-		});
-		$.on(this._$container, 'touchend', (event) => {
-			this._onSlideEnd(event);
-		});
+		})
+			.on(this._$container, 'touchstart', (event) => {
+				this._onSlideStart(this._getTouchEventX(event));
+				event.preventDefault();
+			})
+			.on(this._$container, 'mousemove', (event) => {
+				this._onSlideMove(this._getMouseEventX(event));
+			})
+			.on(this._$container, 'touchmove', (event) => {
+				this._onSlideMove(this._getTouchEventX(event));
+			})
+			.on(this._$container, 'mouseup', (event) => {
+				this._onSlideEnd(event);
+			})
+			.on(this._$container, 'touchend', (event) => {
+				this._onSlideEnd(event);
+			});
 	}
 
 	_onSlideStart (x) {
@@ -143,7 +128,7 @@ class Slider {
 	}
 
 	_setActive (item) {
-		$.addClass(item, this.ACTIVE_CLASS);
+		$.addClass(item, ACTIVE_CLASS);
 	}
 
 	_getItem (index) {
@@ -159,11 +144,12 @@ class Slider {
 			from = this._getItem(this._visible),
 			to = this._getItem(next);
 
-		$.prepend(this._$container, to);
-		$.removeClass(from, this.ACTIVE_CLASS);
-		$.addClass(to, this.ACTIVE_CLASS);	
+		$.prepend(this._$container, to)
+			.removeClass(from, ACTIVE_CLASS)
+			.addClass(to, ACTIVE_CLASS);	
 
 		this._visible = next;
+		this._isAnimate = false;
 	}
 
 	right () {
@@ -171,11 +157,12 @@ class Slider {
 			from = this._getItem(this._visible),
 			to = this._getItem(next);
 
-		$.append(this._$container, from);
-		$.removeClass(from, this.ACTIVE_CLASS);
-		$.addClass(to, this.ACTIVE_CLASS);	
+		$.append(this._$container, from)
+			.removeClass(from, ACTIVE_CLASS)
+			.addClass(to, ACTIVE_CLASS);	
 
-		this._visible = next;
+		this._visible = next;	
+		this._isAnimate = false;
 	}
 
 	_getNextLeft () {

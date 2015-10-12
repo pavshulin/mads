@@ -1,9 +1,9 @@
 @import "mixins"; 
 
 body {
+	background: #C0C0C0;
 	margin: 0;
 	padding: 0;
-	background: #C0C0C0;
 }
 
 .slider-wrapper {
@@ -25,29 +25,31 @@ body {
 			top: 0;
 			opacity: 1;
 
-			.transition(opacity 500ms ease-out 0s);
-
 				img {
 					width: 500px;
 					height: 300px;
 				}
 
-			&.slider-visible-item {
+			&.slider-visible-item, &.slider-active-item{
 				display: block;
 			}	
 
-			&.slider-active-item {
-				display: block;
-			}	
+		}
 
-			&.slider-animate-fade {
-				opacity: 0;
-			}
+		&.slider-fade-animation {
 
-			&.slider-animate-fade-next {
-				opacity: 1;
-				display: block;
-				z-index: -1;	
+			.slider-item {
+				.transition(opacity 500ms ease-out 0s);
+
+				&.slider-animate-fade {
+					opacity: 0;
+				}
+
+				&.slider-animate-fade-next {
+					opacity: 1;
+					display: block;
+					z-index: -1;	
+				}
 			}
 
 		}

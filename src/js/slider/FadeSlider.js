@@ -1,19 +1,36 @@
 var $ = require('../common/mQuery'),
-	Slider = require('./index');
+	Slider = require('./DefaultSlider');
+
+const NEXT_FADE_ANIMATION_CLASS = 'slider-animate-fade-next',
+	  ITEM_FADE_ANIMATION_CLASS = 'slider-animate-fade',
+	  FADE_CONTAINER_CLASS = 'slider-fade-animation',
+	  ACTIVE_CLASS = 'slider-active-item';
 
 class FadeSlider extends Slider {
-	constructor (config) {
-		super(config);
+	constructor (el, config) {
+		super(el, config);
+
+		$.addClass(this._$container, FADE_CONTAINER_CLASS);
 	}
 
 	_startFadeAnimate (from, to) {
-		$.addClass(from, 'slider-animate-fade');
-		$.addClass(to, 'slider-animate-fade-next');
+		$.addClass(from, ITEM_FADE_ANIMATION_CLASS);
+		$.addClass(to, NEXT_FADE_ANIMATION_CLASS);
 	}
 
 	_endFadeAnimate (from, to) {
-		$.removeClass(from, 'slider-animate-fade');
-		$.removeClass(to, 'slider-animate-fade-next');
+		$.removeClass(from, ITEM_FADE_ANIMATION_CLASS);
+		$.removeClass(to, NEXT_FADE_ANIMATION_CLASS);
+	}
+
+	_onAfterFadeAnimate (from, to, next) {
+			$.prepend(this._$container, to);
+			$.removeClass(from, ACTIVE_CLASS);
+			$.addClass(to, ACTIVE_CLASS);	
+			this._endFadeAnimate(from, to);
+
+			this._visible = next;	
+			this._isAnimate = false;
 	}
 
 	left () {
@@ -24,12 +41,7 @@ class FadeSlider extends Slider {
 		this._startFadeAnimate(from, to);
 		
 		setTimeout(() => {
-			$.prepend(this._$container, to);
-			$.removeClass(from, this.ACTIVE_CLASS);
-			$.addClass(to, this.ACTIVE_CLASS);	
-			this._endFadeAnimate(from, to);
-
-			this._visible = next;
+			this._onAfterFadeAnimate(from, to, next);
 		}, this.config.swipeSpeed);
 
 	}
@@ -43,13 +55,7 @@ class FadeSlider extends Slider {
 		this._startFadeAnimate(from, to);
 
 		setTimeout(() => {
-			$.append(this._$container, from);
-			$.removeClass(from, this.ACTIVE_CLASS);
-			$.addClass(to, this.ACTIVE_CLASS);	
-			this._endFadeAnimate(from, to);
-
-			this._visible = next;
-			this._isAnimate = false;
+			this._onAfterFadeAnimate(from, to, next);
 		}, this.config.swipeSpeed);
 
 	}

@@ -1,4 +1,5 @@
-var Slider = require('./slider'),
+var $ = require('./common/mQuery'),
+	Slider = require('./slider/DefaultSlider'),
 	FadeSlider = require('./slider/FadeSlider');
 
 
@@ -21,5 +22,6 @@ var config = {
 };
 
 window.onload = function () {
-	window.slider = new FadeSlider(config);
+	window.fade_slider = new FadeSlider($.find('#fade-slider'), config);
+	window.default_slider = new Slider($.find('#default-slider'), config);
 }
