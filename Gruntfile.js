@@ -20,9 +20,20 @@ module.exports = function(grunt) {
           "public/style.css": "src/css/style.less"
         }
       }
+    },
+    watch: {
+      scripts: {
+        files: ['src/**'],
+        tasks: ['build'],
+        options: {
+          spawn: false,
+          debounceDelay: 1500
+        },
+      },
     }
   });
 
+  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-contrib-less');
 
