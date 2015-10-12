@@ -25,6 +25,7 @@ class Slider {
 		this._items = new Map();
 		this._length = 0;
 		this._userSlideState = {};
+		this._visible = 0;
 
 		return this;
 	}
@@ -99,9 +100,11 @@ class Slider {
 	initializeListeners () {
 		$.on(this._$container, 'mousedown', (event) => {
 			this._onSlideStart(this._getMouseEventX(event));
+			event.preventDefault();
 		});
 		$.on(this._$container, 'touchstart', (event) => {
 			this._onSlideStart(this._getTouchEventX(event));
+			event.preventDefault();
 		});
 
 		$.on(this._$container, 'mousemove', (event) => {
@@ -129,6 +132,8 @@ class Slider {
 			this._userSlideState.slide = false;
 			this._direction = this.
 				_calculateDirection(this._userSlideState.start, x);
+
+			this[this._direction]();	
 		}
 	}
 
@@ -147,7 +152,38 @@ class Slider {
 	_setItem (index, item) {
 		this._items.set(index, item);
 	}	
-}
 
+	left () {
+		var next = this._getNextLeft(),
+			from = this._getItem(this._visible),
+			to = this._getItem(next);
+
+		$.prepend(this._$container, to);
+		$.removeClass(from, this.ACTIVE_CLASS);
+		$.addClass(to, this.ACTIVE_CLASS);	
+
+		this._visible = next;
+	}
+
+	right () {
+		var next = this._getNextRight(),
+			from = this._getItem(this._visible),
+			to = this._getItem(next);
+
+		$.append(this._$container, from);
+		$.removeClass(from, this.ACTIVE_CLASS);
+		$.addClass(to, this.ACTIVE_CLASS);	
+
+		this._visible = next;
+	}
+
+	_getNextLeft () {
+		return this._visible !== 0 ? this._visible - 1 : this._length - 1;
+	}
+
+	_getNextRight () {
+		return this._visible === this._length - 1 ? 0 : this._visible + 1;
+	}
+}
 
 module.exports = Slider;
