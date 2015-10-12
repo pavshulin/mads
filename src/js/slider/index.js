@@ -1,12 +1,15 @@
 var $ = require('../common/mQuery');
 
+var staticProperties = {
+	'defaultConfig': {},
+	'ACTIVE_CLASS': 'slider-active-item',
+	'ITEM_CLASS': 'slider-item'
+}
 class Slider {
 	constructor (config) {
-		this._items = new Map();
-		this._length = 0;
-		this._userSlideState = {};
-
-		this._initializeStaticProperties();
+		this._initializeStaticProperties()
+			._initializeDefaults();
+		
 		this.config = config || this.defaultConfig;
 
 		this._initializeElements()
@@ -18,21 +21,26 @@ class Slider {
 		return this;
 	}
 
+	_initializeDefaults () {
+		this._items = new Map();
+		this._length = 0;
+		this._userSlideState = {};
+
+		return this;
+	}
+
 	_initializeStaticProperties () {
-		Object.defineProperty(this, 'defaultConfig', {
-			value: {},
-			writable: false
-		});
+		var property;
 
-		Object.defineProperty(this, 'ACTIVE_CLASS', {
-			value: 'slider-active-item',
-			writable: false
-		});
-
-		Object.defineProperty(this, 'ITEM_CLASS', {
-			value: 'slider-item',
-			writable: false
-		});
+		for (property in staticProperties) {
+			// hate this crap
+			if (staticProperties.hasOwnProperty(property)) {
+				Object.defineProperty(this, property, {
+					value: staticProperties[property],
+					writable: false
+				});
+			}
+		}
 
 		return this;
 	}
