@@ -128,13 +128,21 @@ class mQuery {
 
 	addClass (el, className) {
 	   	if (this._isNodeElement(el)) {
-        	el.className = [el.className, className].join(" ");
+        	el.className = [el.className, className].join(' ');
     	}
 	}
 
 	removeClass (el, className) {
+		var classes, i;
+		
 	   	if (this._isNodeElement(el)) {
-			el.className = el.className.replace(className, '');
+	   		classes = el.className.split(' ');
+   			i = classes.indexOf(className);
+	   		
+	   		if (i >= 0) {
+	   			classes.splice(i, 1);
+	   			el.className = classes.join(' ');
+	   		}
 		}
 	}
 
