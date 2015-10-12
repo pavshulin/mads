@@ -38,7 +38,9 @@ class mQuery {
 
 		Array.prototype.forEach.call(el, (e) => {
 			callback(e);
-		})
+		});
+
+		return this;
 	}
 
 	_cssForElement (e, properties) {
@@ -53,6 +55,8 @@ class mQuery {
 				e.style[prop] = properties[prop];
 			}
 		}
+
+		return this;
 	}
 
 	css (el, properties) {
@@ -63,14 +67,18 @@ class mQuery {
 		} else if (this._isNodeElement(el)) {
 			this._cssForElement(el, properties);
 		}
+
+		return this;
 	}
 
 	append (parent, el) {
 		parent.appendChild(el);
+		return this;
 	}
 
 	prepend (parent, el) {
 		parent.insertBefore(el, parent.firstChild);
+		return this;
 	}
 
 	html (el, content) {
@@ -80,6 +88,7 @@ class mQuery {
 		}
 
 		el.innerHTML = content;
+		return this;
 	}
 
 	_propForElement (e, properties) {
@@ -94,6 +103,7 @@ class mQuery {
 				e.setAttribute(prop, properties[prop]);
 			}
 		}
+		return this;
 	}
 
 	getProp (el, property) {
@@ -112,10 +122,12 @@ class mQuery {
 		} else if (this._isNodeElement(elements)) {
 			this._propForElement(elements, properties);
 		}
+		return this;
 	}
 
 	createElement (elementName) {
 		return document.createElement(elementName);
+		return this;
 	}
 	
 	get (set, index) {
@@ -130,11 +142,12 @@ class mQuery {
 	   	if (this._isNodeElement(el)) {
         	el.className = [el.className, className].join(' ');
     	}
+    	return this;
 	}
 
 	removeClass (el, className) {
 		var classes, i;
-		
+
 	   	if (this._isNodeElement(el)) {
 	   		classes = el.className.split(' ');
    			i = classes.indexOf(className);
@@ -144,14 +157,17 @@ class mQuery {
 	   			el.className = classes.join(' ');
 	   		}
 		}
+		return this;
 	}
 
 	on (el, event, callback) {
 		el.addEventListener(event, callback);
+		return this;
 	}
 
 	off (el, event, callback) {
 		el.removeEventListener(event, callback);
+		return this;
 	}
 }
 
