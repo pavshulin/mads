@@ -1,4 +1,5 @@
-var Slider = require('./slider');
+var Slider = require('./slider'),
+	FadeSlider = require('./slider/FadeSlider');
 
 
 var config = {
@@ -20,5 +21,5 @@ var config = {
 };
 
 window.onload = function () {
-	window.slider = new Slider(config);
+	window.slider = new FadeSlider(config);
 }

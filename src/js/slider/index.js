@@ -26,6 +26,7 @@ class Slider {
 		this._length = 0;
 		this._userSlideState = {};
 		this._visible = 0;
+		this._isAnimate = false;
 
 		return this;
 	}
@@ -128,7 +129,7 @@ class Slider {
 	}
 
 	_onSlideMove (x) {
-		if (this._userSlideState.slide) {
+		if (!this._isAnimate && this._userSlideState.slide) {
 			this._userSlideState.slide = false;
 			this._direction = this.
 				_calculateDirection(this._userSlideState.start, x);
