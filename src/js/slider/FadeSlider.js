@@ -14,19 +14,20 @@ class FadeSlider extends Slider {
 	}
 
 	_startFadeAnimate (from, to) {
-		$.addClass(from, ITEM_FADE_ANIMATION_CLASS);
-		$.addClass(to, NEXT_FADE_ANIMATION_CLASS);
+		$.addClass(from, ITEM_FADE_ANIMATION_CLASS)
+			.addClass(to, NEXT_FADE_ANIMATION_CLASS);
 	}
 
 	_endFadeAnimate (from, to) {
-		$.removeClass(from, ITEM_FADE_ANIMATION_CLASS);
-		$.removeClass(to, NEXT_FADE_ANIMATION_CLASS);
+		$.removeClass(from, ITEM_FADE_ANIMATION_CLASS)
+			.removeClass(to, NEXT_FADE_ANIMATION_CLASS);
 	}
 
 	_onAfterFadeAnimate (from, to, next) {
-			$.prepend(this._$container, to);
-			$.removeClass(from, ACTIVE_CLASS);
-			$.addClass(to, ACTIVE_CLASS);	
+			$.prepend(this._$container, to)
+				.removeClass(from, ACTIVE_CLASS)
+				.addClass(to, ACTIVE_CLASS);
+					
 			this._endFadeAnimate(from, to);
 
 			this._visible = next;	
