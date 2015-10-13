@@ -3,8 +3,7 @@ var $ = require('../common/mQuery'),
 
 const NEXT_FADE_ANIMATION_CLASS = 'slider-animate-fade-next',
 	  ITEM_FADE_ANIMATION_CLASS = 'slider-animate-fade',
-	  FADE_CONTAINER_CLASS = 'slider-fade-animation',
-	  ACTIVE_CLASS = 'slider-active-item';
+	  FADE_CONTAINER_CLASS = 'slider-fade-animation';
 
 class FadeSlider extends Slider {
 	constructor (el, config) {
@@ -24,10 +23,11 @@ class FadeSlider extends Slider {
 	}
 
 	_onAfterFadeAnimate (from, to, next) {
-			$.prepend(this._$container, to)
-				.removeClass(from, ACTIVE_CLASS)
-				.addClass(to, ACTIVE_CLASS);
-					
+			$.prepend(this._$container, to);
+
+			this._unsetActiveClass(from);
+			this._setActive(to);
+
 			this._endFadeAnimate(from, to);
 
 			this._visible = next;	

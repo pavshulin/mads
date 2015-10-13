@@ -1,6 +1,7 @@
 var $ = require('./common/mQuery'),
 	Slider = require('./slider/DefaultSlider'),
-	FadeSlider = require('./slider/FadeSlider');
+	FadeSlider = require('./slider/FadeSlider'),
+	GlideSlider = require('./slider/GlideSlider');
 
 
 var config = {
@@ -16,12 +17,13 @@ var config = {
 	// possible values: 'auto', 'manual', 'automanual'
 	mode: 'auto',
 	// arbitrary interger (miliseconds)
-	swipeSpeed: 500,
+	swipeSpeed: 600,
 	// arbitrary interger (miliseconds). This is used in 'auto' and 'automanual' modes
 	swipeDelay: 3000
 };
 
 window.onload = function () {
 	window.fade_slider = new FadeSlider($.find('#fade-slider'), config);
+	window.glide_slider = new GlideSlider($.find('#glide-slider'), config);
 	window.default_slider = new Slider($.find('#default-slider'), config);
 }

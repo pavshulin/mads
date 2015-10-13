@@ -1,40 +1,58 @@
 var $ = require('../common/mQuery'),
 	Slider = require('./DefaultSlider');
 
-const ACTIVE_CLASS = 'slider-active-item';
+const ITEM_GLIDE_ANIMATION_RIGHT_CLASS = 'slider-animate-right-glide',
+	  NEXT_GLIDE_RIGHT_NEXT_CLASS = 'slider-glide-right-next',
+	  ITEM_GLIDE_ANIMATION_LEFT_CLASS = 'slider-animate-left-glide',
+  	  NEXT_GLIDE_LEFT_NEXT_CLASS = 'slider-glide-left-next',
+	  GLIDE_CONTAINER_CLASS = 'slider-glide-animation';
 
 class GlideSlider extends Slider {
 	
 	constructor (el, config) {
 		super(el, config);
+
+		$.addClass(this._$container, GLIDE_CONTAINER_CLASS);
+	}
+
+	_onAfterAnimation (from, to, next) {
+		this._unsetActiveClass(from);
+		this._setActive(to);	
+
+		this._visible = next;
+		this._isAnimate = false;
 	}
 
 	_startLeftGlideAnimate (from, to) {
+		$.prepend(this._$container, to);
 
+		$.addClass(to, 'no-transition');
+		$.addClass(to, NEXT_GLIDE_LEFT_NEXT_CLASS)
+			$.addClass(from, ITEM_GLIDE_ANIMATION_LEFT_CLASS);
+
+			$.removeClass(to, 'no-transition');
+			$.css(to, {
+				'margin-left': '0'
+			});			
 	}
 
-	_endLeftGlideAnimate (from, to, next) {
-		$.prepend(this._$container, to)
-			.removeClass(from, this.ACTIVE_CLASS)
-			.addClass(to, this.ACTIVE_CLASS);
+	_endLeftGlideAnimate (from, to) {
+		$.prepend(this._$container, to);
 
-		this._endLeftGlideAnimate(from, to);
-		this._visible = next;
-		this._isAnimate = false;
+		$.removeClass(to, NEXT_GLIDE_LEFT_NEXT_CLASS)
+			.removeClass(from, ITEM_GLIDE_ANIMATION_LEFT_CLASS);
 	}
 
 	_startRightGlideAnimate (from, to) {
-
+		$.addClass(to, NEXT_GLIDE_RIGHT_NEXT_CLASS)
+			.addClass(from, ITEM_GLIDE_ANIMATION_RIGHT_CLASS);
 	}
 
-	_endRightGlideAnimate (from, to) {
-		$.append(this._$container, from)
-			.removeClass(from, this.ACTIVE_CLASS)
-			.addClass(to, this.ACTIVE_CLASS);
+	_endRightGlideAnimate (from, to, next) {
+		$.append(this._$container, from);
 
-		this._endRightGlideAnimate(from, to);
-		this._visible = next;
-		this._isAnimate = false;
+		$.removeClass(to, NEXT_GLIDE_RIGHT_NEXT_CLASS)
+			.removeClass(from, ITEM_GLIDE_ANIMATION_RIGHT_CLASS);
 	}
 
 	left () {
@@ -42,10 +60,12 @@ class GlideSlider extends Slider {
 			from = this._getItem(this._visible),
 			to = this._getItem(next);
 
+		this._isAnimate = true;
 		this._startLeftGlideAnimate(from, to);
 		
 		setTimeout(() => {
-			this._endLeftGlideAnimate(from, to, next);
+			this._endLeftGlideAnimate(from, to);
+			this._onAfterAnimation(from, to, next);	
 		}, this.config.swipeSpeed);
 
 	}
@@ -59,7 +79,8 @@ class GlideSlider extends Slider {
 		this._startRightGlideAnimate(from, to);
 
 		setTimeout(() => {
-			this._endRightGlideAnimate(from, to, next);
+			this._endRightGlideAnimate(from, to);
+			this._onAfterAnimation(from, to, next);	
 		}, this.config.swipeSpeed);
 
 	}
