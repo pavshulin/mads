@@ -26,11 +26,8 @@ class GlideSlider extends Slider {
 	_startLeftGlideAnimate (from, to) {
 		$.prepend(this._$container, to);
 
-		$.addClass(to, 'no-transition');
 		$.addClass(to, NEXT_GLIDE_LEFT_NEXT_CLASS)
 			$.addClass(from, ITEM_GLIDE_ANIMATION_LEFT_CLASS);
-
-			$.removeClass(to, 'no-transition');
 			$.css(to, {
 				'margin-left': '0'
 			});			

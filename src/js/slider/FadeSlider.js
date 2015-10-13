@@ -28,8 +28,6 @@ class FadeSlider extends Slider {
 			this._unsetActiveClass(from);
 			this._setActive(to);
 
-			this._endFadeAnimate(from, to);
-
 			this._visible = next;	
 			this._isAnimate = false;
 	}
@@ -56,6 +54,7 @@ class FadeSlider extends Slider {
 		this._startFadeAnimate(from, to);
 
 		setTimeout(() => {
+			this._endFadeAnimate(from, to);
 			this._onAfterFadeAnimate(from, to, next);
 		}, this.config.swipeSpeed);
 

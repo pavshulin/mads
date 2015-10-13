@@ -15,7 +15,7 @@ var config = {
 		'public/img/liara.jpg'
 	],
 	// possible values: 'auto', 'manual', 'automanual'
-	mode: 'auto',
+	mode: 'automanual',
 	// arbitrary interger (miliseconds)
 	swipeSpeed: 600,
 	// arbitrary interger (miliseconds). This is used in 'auto' and 'automanual' modes

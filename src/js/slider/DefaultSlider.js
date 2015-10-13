@@ -4,21 +4,28 @@ const CONTAINER_CLASS = 'slider-container',
 	  ACTIVE_CLASS = 'slider-active-item',
 	  WRAPPER_CLASS = 'slider-wrapper',
 	  ITEM_CLASS = 'slider-item',
+	  MODES = {
+	  	AUTOMANUAL: 'automanual',
+	  	MANUAL: 'manual',
+	  	AUTO: 'auto'
+	  },
 	  DEFAULT_CONFIG = {
-	  	swipeSpeed: 500
+	  	swipeSpeed: 500,
+	  	mode: MODES.MANUAL
 	  };
 
 class Slider {
 	
 	constructor (el, config) {
-		this._initializeDefaults();
 		
 		this.config = config || DEFAULT_CONFIG;
 
-		this._initializeElements(el)
+		this._initializeDefaults()
+			._initializeElements(el)
 			._createItems()
-			.defineSwipeSpeed()
-			.initializeListeners();
+			._defineSwipeSpeed()
+			._initializeListeners()
+			._checkMode();
 
 		this._setActive(this._getItem(0));
 
@@ -26,18 +33,24 @@ class Slider {
 	}
 
 	_initializeDefaults () {
-		this._items = new Map();
-		this._length = 0;
+		this._mode = this.config.mode; 
 		this._userSlideState = {};
-		this._visible = 0;
+		this._autoSwipeID = null;
+		this._items = new Map();
 		this._isAnimate = false;
+		this._visible = 0;
+		this._length = 0;
 
 		return this;
 	}
 
-	defineSwipeSpeed () {
+	_defineSwipeSpeed () {
+		var items;
+
 		if (this.config.swipeSpeed !== DEFAULT_CONFIG.swipeSpeed) {
-			$.each($.findAll(this._$container, ['.', ITEM_CLASS].join('')), (el) => {
+			items = $.findAll(this._$container, ['.', ITEM_CLASS].join(''));
+			
+			$.each(items, (el) => {
 				$.css(el, {
 					'transition-duration': (this.config.swipeSpeed || 0) + 'ms'  
 				})
@@ -45,6 +58,24 @@ class Slider {
 		}
 
 		return this;
+	}
+
+	_checkMode () {
+		if (this.config.mode === MODES.AUTO ||
+		 this.config.mode === MODES.AUTOMANUAL) {
+			this._autoSwipeID = setInterval(() => {
+				this._autoSwipe();
+			}, this.config.swipeDelay)
+		}
+	}
+
+	_autoSwipe () {
+		this.right();
+	}
+
+	_switchToManual () {
+		this._mode = MODES.MANUAL;
+		clearInterval(this._autoSwipeID);
 	}
 
 	_initializeElements (el) {
@@ -100,7 +131,7 @@ class Slider {
 		return x1 - x2 > 0 && 'right' || 'left';
 	} 
 
-	initializeListeners () {
+	_initializeListeners () {
 		$.on(this._$container, 'mousedown', (event) => {
 			this._onSlideStart(this._getMouseEventX(event));
 			event.preventDefault();
@@ -121,6 +152,8 @@ class Slider {
 			.on(this._$container, 'touchend', (event) => {
 				this._onSlideEnd(event);
 			});
+
+		return this;	
 	}
 
 	_onSlideStart (x) {
@@ -129,17 +162,37 @@ class Slider {
 	}
 
 	_onSlideMove (x) {
+		var direction;
+
 		if (!this._isAnimate && this._userSlideState.slide) {
 			this._userSlideState.slide = false;
-			this._direction = this.
+			direction = this.
 				_calculateDirection(this._userSlideState.start, x);
 
-			this[this._direction]();	
+			this.slideRuler(direction);	
 		}
 	}
 
 	_onSlideEnd (event) {
 		this._userSlideState.slide = false;
+	}
+
+	getSwipeMethod (direction) {
+		return direction in this && this[direction] || this.right;
+	}
+
+	slideRuler (direction) {
+
+		if (this._mode === MODES.AUTO) {
+			return false;
+		}
+
+		if (this._mode === MODES.AUTOMANUAL) {
+			this._switchToManual();
+		}
+
+		// should return left or right method and call them;
+		this.getSwipeMethod(direction).call(this);
 	}
 
 	_setActive (item) {
@@ -187,11 +240,15 @@ class Slider {
 	}
 
 	_getNextLeft () {
-		return this._visible !== 0 ? this._visible - 1 : this._length - 1;
+		return this._visible !== 0 ? 
+			this._visible - 1 : 
+			this._length - 1;
 	}
 
 	_getNextRight () {
-		return this._visible === this._length - 1 ? 0 : this._visible + 1;
+		return this._visible === this._length - 1 ? 
+			0 : 
+			this._visible + 1;
 	}
 }
 
