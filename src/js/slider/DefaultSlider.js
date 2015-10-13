@@ -4,17 +4,20 @@ const CONTAINER_CLASS = 'slider-container',
 	  ACTIVE_CLASS = 'slider-active-item',
 	  WRAPPER_CLASS = 'slider-wrapper',
 	  ITEM_CLASS = 'slider-item',
-	  defaultConfig = {};
+	  DEFAULT_CONFIG = {
+	  	swipeSpeed: 500
+	  };
 
 class Slider {
 	
 	constructor (el, config) {
 		this._initializeDefaults();
 		
-		this.config = config || this.defaultConfig;
+		this.config = config || DEFAULT_CONFIG;
 
 		this._initializeElements(el)
 			._createItems()
+			.defineSwipeSpeed()
 			.initializeListeners();
 
 		this._setActive(this._getItem(0));
@@ -28,6 +31,18 @@ class Slider {
 		this._userSlideState = {};
 		this._visible = 0;
 		this._isAnimate = false;
+
+		return this;
+	}
+
+	defineSwipeSpeed () {
+		if (this.config.swipeSpeed !== DEFAULT_CONFIG.swipeSpeed) {
+			$.each($.findAll(this._$container, ['.', ITEM_CLASS].join('')), (el) => {
+				$.css(el, {
+					'transition-duration': (this.config.swipeSpeed || 0) + 'ms'  
+				})
+			});
+		}
 
 		return this;
 	}
@@ -82,7 +97,7 @@ class Slider {
 	}
 
 	_calculateDirection (x1, x2) {
-		return x1 - x2 > 0 && 'left' || 'right';
+		return x1 - x2 > 0 && 'right' || 'left';
 	} 
 
 	initializeListeners () {
@@ -131,6 +146,10 @@ class Slider {
 		$.addClass(item, ACTIVE_CLASS);
 	}
 
+	_unsetActiveClass (item) {
+		$.removeClass(item, ACTIVE_CLASS);
+	}
+
 	_getItem (index) {
 		return this._items.get(index);
 	}
@@ -144,9 +163,10 @@ class Slider {
 			from = this._getItem(this._visible),
 			to = this._getItem(next);
 
-		$.prepend(this._$container, to)
-			.removeClass(from, ACTIVE_CLASS)
-			.addClass(to, ACTIVE_CLASS);	
+		$.prepend(this._$container, to);
+
+		this._unsetActiveClass(from);
+		this._setActive(to);	
 
 		this._visible = next;
 		this._isAnimate = false;
@@ -157,9 +177,10 @@ class Slider {
 			from = this._getItem(this._visible),
 			to = this._getItem(next);
 
-		$.append(this._$container, from)
-			.removeClass(from, ACTIVE_CLASS)
-			.addClass(to, ACTIVE_CLASS);	
+		$.append(this._$container, from);
+		
+		this._unsetActiveClass(from);
+		this._setActive(to);	
 
 		this._visible = next;	
 		this._isAnimate = false;
