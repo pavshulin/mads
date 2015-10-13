@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Mads Slider</title>
+	<script type="text/javascript" src="script.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<link rel="icon" type="image/png" href="favicon.ico" />
+</head>
+<body>
+
+	<div id="fade-slider">
+	</div>
+
+	<div id="glide-slider">
+	</div>
+
+	<div id="slider">
+	</div>
+
+	<script type="text/javascript">
+		var config = {
+			// arbitrary number of images
+			images: [
+				'img/shepard.jpg',
+				'img/ida.png',
+				'img/garrus.jpg',
+				'img/mordin.jpg',
+				'img/joker.png',
+				'img/liara.jpg'
+			],
+			// possible values: 'auto', 'manual', 'automanual'
+			mode: 'automanual',
+			// arbitrary interger (miliseconds)
+			swipeSpeed: 600,
+			// arbitrary interger (miliseconds). This is used in 'auto' and 'automanual' modes
+			swipeDelay: 3000
+		};
+
+		var $glide_slider = document.getElementById('glide-slider'),
+			$fade_slider = document.getElementById('fade-slider'),
+			$slider = document.getElementById('slider');
+
+		var fade_slider = new FadeSlider($fade_slider, config);
+			glide_slider = new GlideSlider($glide_slider, config);
+			default_slider = new Slider($slider, config);
+
+	</script>	
+
+</body>
+</html>

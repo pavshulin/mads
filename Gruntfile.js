@@ -4,7 +4,7 @@ module.exports = function(grunt) {
     browserify: {
       dist: {
         files: {
-          'public/script.js': ['src/js/**/*.js']
+          'example/script.js': ['src/js/**/*.js']
         },
         options: {
           transform: ['babelify']
@@ -17,7 +17,7 @@ module.exports = function(grunt) {
           paths: ["src/css"]
         },
         files: {
-          "public/style.css": "src/css/style.less"
+          "example/style.css": "src/css/style.less"
         }
       }
     },

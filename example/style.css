@@ -1,0 +1,80 @@
+body {
+  background: #C0C0C0;
+  margin: 0;
+  padding: 20px;
+}
+.slider-wrapper {
+  margin: 100px auto 0;
+  width: 500px;
+  overflow: hidden;
+  height: 300px;
+  border: 1px solid black;
+}
+.slider-wrapper .slider-container {
+  position: relative;
+}
+.slider-wrapper .slider-container .slider-item {
+  position: absolute;
+  display: none;
+  left: 0;
+  top: 0;
+  opacity: 1;
+  width: 500px;
+  height: 300px;
+  overflow: hidden;
+}
+.slider-wrapper .slider-container .slider-item img {
+  width: 500px;
+  height: 300px;
+}
+.slider-wrapper .slider-container .slider-item.slider-visible-item,
+.slider-wrapper .slider-container .slider-item.slider-active-item {
+  display: block;
+}
+.slider-wrapper .slider-container.slider-fade-animation .slider-item {
+  -webkit-transition: opacity 500ms ease-out 0s;
+  -moz-transition: opacity 500ms ease-out 0s;
+  -ms-transition: opacity 500ms ease-out 0s;
+  -o-transition: opacity 500ms ease-out 0s;
+}
+.slider-wrapper .slider-container.slider-fade-animation .slider-item.slider-animate-fade {
+  opacity: 0;
+}
+.slider-wrapper .slider-container.slider-fade-animation .slider-item.slider-animate-fade-next {
+  opacity: 1;
+  display: block;
+  z-index: -1;
+}
+.slider-wrapper .slider-container.slider-glide-animation {
+  overflow: hidden;
+  display: inline-flex;
+}
+.slider-wrapper .slider-container.slider-glide-animation .slider-item {
+  position: static;
+  display: none;
+  width: 500px;
+  height: 300px;
+  overflow: hidden;
+  -webkit-transition: all 500ms ease-in-out 0s;
+  -moz-transition: all 500ms ease-in-out 0s;
+  -ms-transition: all 500ms ease-in-out 0s;
+  -o-transition: all 500ms ease-in-out 0s;
+}
+.slider-wrapper .slider-container.slider-glide-animation .slider-item.slider-visible-item,
+.slider-wrapper .slider-container.slider-glide-animation .slider-item.slider-active-item {
+  display: block;
+}
+.slider-wrapper .slider-container.slider-glide-animation .slider-item.slider-animate-left-glide {
+  display: block;
+}
+.slider-wrapper .slider-container.slider-glide-animation .slider-item.slider-glide-left-next {
+  display: block;
+  margin-left: -50%;
+}
+.slider-wrapper .slider-container.slider-glide-animation .slider-item.slider-animate-right-glide {
+  margin-left: -50%;
+}
+.slider-wrapper .slider-container.slider-glide-animation .slider-item.slider-glide-right-next {
+  display: block;
+  float: left;
+}
